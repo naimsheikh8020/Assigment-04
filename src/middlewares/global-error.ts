@@ -1,53 +1,116 @@
 import { NextFunction, Request, Response } from "express";
-import { Prisma } from "../../generated/prisma/client";
-import httpStatus from "http-status";
+import { Prisma } from "../../generated/prisma/client"; // or "@prisma/client"
+import { StatusCodes } from "http-status-codes";
+import { ZodError } from "zod";
+import jwt from "jsonwebtoken";
+
 export const globalErrorHandler = (
-  err: any,
+  err: unknown,
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
-  console.log("Error : ", err);
+): void => {
+  console.error(err);
 
-  let statusCode;
-  let errorMessage = err.message || "Internal Server Error";
-  let errorName = err.name || "Internal Server Error";
-  // let errorDetails = err.stack
+  let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  let message = "Internal Server Error";
+  let name = "Error";
+  let errors: unknown = undefined;
 
-  if (err instanceof Prisma.PrismaClientValidationError) {
-    statusCode = httpStatus.BAD_REQUEST;
-    errorMessage = "You have provided incorrect field type or missing fields";
-  } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    if (err.code === "P2002") {
-      ((statusCode = httpStatus.BAD_REQUEST),
-        (errorMessage = "Duplicate Key Error"));
-    } else if (err.code === "P2003") {
-      ((statusCode = httpStatus.BAD_REQUEST),
-        (errorMessage = "Foreign key constraint failed"));
-    } else if (err.code === "P2025") {
-      ((statusCode = httpStatus.BAD_REQUEST),
-        (errorMessage =
-          "An operation failed because it depends on one or more records that were required but not found."));
-    }
-  } else if (err instanceof Prisma.PrismaClientInitializationError) {
-    if (err.errorCode === "P1000") {
-      statusCode = httpStatus.UNAUTHORIZED;
-      errorMessage =
-        "Authentication failed against database server. Please Check Your Credentials";
-    } else if (err.errorCode === "P1001") {
-      statusCode = httpStatus.BAD_REQUEST;
-      errorMessage = "Can't reach database server";
-    }
-  } else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
-    statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-    errorMessage = "Error occurred during query execution";
+  if (err instanceof Error) {
+    message = err.message;
+    name = err.name;
   }
 
-  res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+  // Prisma Validation Error
+  if (err instanceof Prisma.PrismaClientValidationError) {
+    statusCode = StatusCodes.BAD_REQUEST;
+    message = "Invalid data provided.";
+  }
+
+  // Prisma Known Errors
+  else if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    switch (err.code) {
+      case "P2002":
+        statusCode = StatusCodes.BAD_REQUEST;
+        message = `Duplicate value for ${String(err.meta?.target)}`;
+        break;
+
+      case "P2003":
+        statusCode = StatusCodes.BAD_REQUEST;
+        message = "Foreign key constraint failed.";
+        break;
+
+      case "P2025":
+        statusCode = StatusCodes.NOT_FOUND;
+        message = "Requested resource not found.";
+        break;
+
+      default:
+        statusCode = StatusCodes.BAD_REQUEST;
+        message = err.message;
+    }
+  }
+
+  // Prisma Initialization Error
+  else if (err instanceof Prisma.PrismaClientInitializationError) {
+    switch (err.errorCode) {
+      case "P1000":
+        statusCode = StatusCodes.UNAUTHORIZED;
+        message = "Database authentication failed.";
+        break;
+
+      case "P1001":
+        statusCode = StatusCodes.SERVICE_UNAVAILABLE;
+        message = "Cannot connect to the database server.";
+        break;
+
+      default:
+        statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+        message = err.message;
+    }
+  }
+
+  // Prisma Unknown Error
+  else if (err instanceof Prisma.PrismaClientUnknownRequestError) {
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    message = "Unknown database error occurred.";
+  }
+
+  // Zod Validation Error
+  else if (err instanceof ZodError) {
+    statusCode = StatusCodes.BAD_REQUEST;
+    message = "Validation failed.";
+
+    errors = err.issues.map((issue) => ({
+      path: issue.path.join("."),
+      message: issue.message,
+    }));
+  }
+
+  // JWT Invalid Token
+  else if (err instanceof jwt.JsonWebTokenError) {
+    statusCode = StatusCodes.UNAUTHORIZED;
+    message = "Invalid token.";
+  }
+
+  // JWT Expired Token
+  else if (err instanceof jwt.TokenExpiredError) {
+    statusCode = StatusCodes.UNAUTHORIZED;
+    message = "Token has expired.";
+  }
+
+  res.status(statusCode).json({
     success: false,
-    statusCode: statusCode || httpStatus.INTERNAL_SERVER_ERROR,
-    name: errorName,
-    message: errorMessage,
-    error: err.stack,
+    statusCode,
+    name,
+    message,
+    errors,
+    stack:
+      process.env.NODE_ENV === "development"
+        ? err instanceof Error
+          ? err.stack
+          : undefined
+        : undefined,
   });
 };
