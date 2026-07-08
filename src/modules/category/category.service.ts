@@ -1,7 +1,13 @@
 import slugify from "slugify";
+import { StatusCodes } from "http-status-codes";
 
 import { prisma } from "../../config/prisma";
-import { TCreateCategory, TUpdateCategory } from "./category.interface";
+import { AppError } from "../../middlewares/AppError";
+
+import {
+  TCreateCategory,
+  TUpdateCategory,
+} from "./category.interface";
 
 const createCategory = async (payload: TCreateCategory) => {
   const existingCategory = await prisma.category.findUnique({
@@ -11,7 +17,10 @@ const createCategory = async (payload: TCreateCategory) => {
   });
 
   if (existingCategory) {
-    throw new Error("Category already exists");
+    throw new AppError(
+      StatusCodes.CONFLICT,
+      "Category already exists"
+    );
   }
 
   const slug = slugify(payload.name, {
@@ -39,11 +48,20 @@ const getAllCategories = async () => {
 };
 
 const getSingleCategory = async (id: string) => {
-  return await prisma.category.findUnique({
+  const category = await prisma.category.findUnique({
     where: {
       id,
     },
   });
+
+  if (!category) {
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      "Category not found"
+    );
+  }
+
+  return category;
 };
 
 const updateCategory = async (
@@ -57,10 +75,13 @@ const updateCategory = async (
   });
 
   if (!category) {
-    throw new Error("Category not found");
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      "Category not found"
+    );
   }
 
-  const data: any = {
+  const data: TUpdateCategory & { slug?: string } = {
     ...payload,
   };
 
@@ -88,7 +109,10 @@ const deleteCategory = async (id: string) => {
   });
 
   if (!category) {
-    throw new Error("Category not found");
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      "Category not found"
+    );
   }
 
   return await prisma.category.delete({

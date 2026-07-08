@@ -3,6 +3,7 @@ import { Prisma } from "../../generated/prisma/client"; // or "@prisma/client"
 import { StatusCodes } from "http-status-codes";
 import { ZodError } from "zod";
 import jwt from "jsonwebtoken";
+import { AppError } from "./AppError";
 
 export const globalErrorHandler = (
   err: unknown,
@@ -21,7 +22,9 @@ export const globalErrorHandler = (
     message = err.message;
     name = err.name;
   }
-
+  if (err instanceof AppError) {
+  statusCode = err.statusCode;
+}
   // Prisma Validation Error
   if (err instanceof Prisma.PrismaClientValidationError) {
     statusCode = StatusCodes.BAD_REQUEST;
