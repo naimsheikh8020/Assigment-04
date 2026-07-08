@@ -23,7 +23,7 @@ export const auth =
         : authHeader;
 
       const decoded = verifyToken(
-        token,
+        token as string,
         config.jwt_access_screct
       );
 
