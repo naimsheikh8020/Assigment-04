@@ -1,15 +1,26 @@
 import { UserRole } from "../../../generated/prisma/enums";
 
-export interface IRegisterUser {
+export type TRegisterUser = {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
   phone?: string;
   avatar?: string;
-}
+  role: UserRole;
+};
 
-export interface ILoginUser {
+export type TLoginUser = {
   email: string;
   password: string;
-}
+};
+
+export type TJwtPayload = {
+  userId: string;
+  email: string;
+  role: UserRole;
+};
+
+export type TJwtResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
