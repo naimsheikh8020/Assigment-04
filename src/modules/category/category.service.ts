@@ -1,6 +1,5 @@
 import slugify from "slugify";
 import { StatusCodes } from "http-status-codes";
-
 import { prisma } from "../../config/prisma";
 import { AppError } from "../../middlewares/AppError";
 

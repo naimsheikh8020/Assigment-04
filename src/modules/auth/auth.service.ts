@@ -4,6 +4,8 @@ import { TLoginUser, TRegisterUser } from "./auth.interface";
 import { comparePassword, hashPassword } from "../../utils/bcrypt";
 import { createToken } from "../../utils/jwt";
 import config from "../../config";
+import { AppError } from "../../middlewares/AppError";
+import { StatusCodes } from "http-status-codes";
 
 const registerUser = async (payload: TRegisterUser) => {
   // check existing user
@@ -14,7 +16,7 @@ const registerUser = async (payload: TRegisterUser) => {
   });
 
   if (existingUser) {
-    throw new Error("User already exists.");
+    throw new AppError(StatusCodes.CONFLICT, "User already exists");
   }
 
   // hash password
@@ -48,7 +50,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   const isPasswordMatched = await comparePassword(
     payload.password,
-    user.password
+    user.password,
   );
 
   if (!isPasswordMatched) {
@@ -64,13 +66,13 @@ const loginUser = async (payload: TLoginUser) => {
   const accessToken = createToken(
     jwtPayload,
     config.jwt_access_screct,
-    config.jwt_access_expires_in
+    config.jwt_access_expires_in,
   );
 
   const refreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_screct,
-    config.jwt_refresh_expires_in
+    config.jwt_refresh_expires_in,
   );
 
   return {
