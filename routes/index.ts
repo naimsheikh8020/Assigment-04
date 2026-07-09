@@ -8,6 +8,7 @@ import { RentalRoutes } from "../src/modules/rental/rental.route";
 import { PaymentRoutes } from "../src/modules/payment/payment.route";
 import { OrderRoutes } from "../src/modules/provider/order/order.route";
 import { ReviewRoutes } from "../src/modules/review/review.route";
+import { ProfileRoutes } from "../src/modules/profile/profile.route";
 
 const router = Router();
 
@@ -45,9 +46,13 @@ const moduleRoutes = [
     route: OrderRoutes,
   },
   {
-  path: "/reviews",
-  route: ReviewRoutes,
-},
+    path: "/reviews",
+    route: ReviewRoutes,
+  },
+  {
+    path: "/profile",
+    route: ProfileRoutes,
+  },
 ];
 
 moduleRoutes.forEach((route) => {
