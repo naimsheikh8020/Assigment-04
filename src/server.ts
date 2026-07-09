@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
-import config from "./config";
-import { prisma } from "./config/prisma";
+import config from "./config/index.js";
+import { prisma } from "./config/prisma.js";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 dotenv.config();
 
-import app from "./app";
+import app from "./app.js";
 const PORT = config.port;
 
 const isDirectRun =

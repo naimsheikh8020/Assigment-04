@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { AuthRoutes } from "../src/modules/auth/auth.routes";
-import { CategoryRoutes } from "../src/modules/category/category.route";
-import { UserRoutes } from "../src/modules/admin/user/user.route";
-import { GearRoutes } from "../src/modules/provider/gear/gear.route";
-import { PublicGearRoutes } from "../src/modules/gear/gear.route";
-import { RentalRoutes } from "../src/modules/rental/rental.route";
-import { PaymentRoutes } from "../src/modules/payment/payment.route";
-import { OrderRoutes } from "../src/modules/provider/order/order.route";
-import { ReviewRoutes } from "../src/modules/review/review.route";
-import { ProfileRoutes } from "../src/modules/profile/profile.route";
-import { AdminGearRoutes } from "../src/modules/admin/gear/gear.route";
-import { AdminRentalRoutes } from "../src/modules/admin/rental/rental.route";
+import { AuthRoutes } from "../src/modules/auth/auth.routes.js";
+import { CategoryRoutes } from "../src/modules/category/category.route.js";
+import { UserRoutes } from "../src/modules/admin/user/user.route.js";
+import { GearRoutes } from "../src/modules/provider/gear/gear.route.js";
+import { PublicGearRoutes } from "../src/modules/gear/gear.route.js";
+import { RentalRoutes } from "../src/modules/rental/rental.route.js";
+import { PaymentRoutes } from "../src/modules/payment/payment.route.js";
+import { OrderRoutes } from "../src/modules/provider/order/order.route.js";
+import { ReviewRoutes } from "../src/modules/review/review.route.js";
+import { ProfileRoutes } from "../src/modules/profile/profile.route.js";
+import { AdminGearRoutes } from "../src/modules/admin/gear/gear.route.js";
+import { AdminRentalRoutes } from "../src/modules/admin/rental/rental.route.js";
 
 const router = Router();
 

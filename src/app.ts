@@ -2,8 +2,8 @@ import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 
 import routes from "../routes/index.js";
-import { globalErrorHandler } from "./middlewares/global-error";
-import { notFoundHandler } from "./middlewares/not-found";
+import { globalErrorHandler } from "./middlewares/global-error.js";
+import { notFoundHandler } from "./middlewares/not-found.js";
 
 const app: Application = express();
 
