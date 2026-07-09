@@ -4,6 +4,7 @@ import { CategoryRoutes } from "../src/modules/category/category.route";
 import { UserRoutes } from "../src/modules/admin/user/user.route";
 import { GearRoutes } from "../src/modules/provider/gear/gear.route";
 import { PublicGearRoutes } from "../src/modules/gear/gear.route";
+import { RentalRoutes } from "../src/modules/rental/rental.route";
 
 const router = Router();
 
@@ -29,6 +30,10 @@ const moduleRoutes = [
     path: "/gear",
     route: PublicGearRoutes,
   },
+  {
+  path: "/rentals",
+  route: RentalRoutes,
+},
 ];
 
 moduleRoutes.forEach((route) => {
