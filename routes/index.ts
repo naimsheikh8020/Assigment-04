@@ -5,6 +5,8 @@ import { UserRoutes } from "../src/modules/admin/user/user.route";
 import { GearRoutes } from "../src/modules/provider/gear/gear.route";
 import { PublicGearRoutes } from "../src/modules/gear/gear.route";
 import { RentalRoutes } from "../src/modules/rental/rental.route";
+import { PaymentRoutes } from "../src/modules/payment/payment.route";
+import { OrderRoutes } from "../src/modules/provider/order/order.route";
 
 const router = Router();
 
@@ -12,7 +14,6 @@ const moduleRoutes = [
   {
     path: "/auth",
     route: AuthRoutes,
-    
   },
   {
     path: "/categories",
@@ -31,9 +32,17 @@ const moduleRoutes = [
     route: PublicGearRoutes,
   },
   {
-  path: "/rentals",
-  route: RentalRoutes,
-},
+    path: "/rentals",
+    route: RentalRoutes,
+  },
+  {
+    path: "/payments",
+    route: PaymentRoutes,
+  },
+  {
+    path: "/provider/orders",
+    route: OrderRoutes,
+  }
 ];
 
 moduleRoutes.forEach((route) => {

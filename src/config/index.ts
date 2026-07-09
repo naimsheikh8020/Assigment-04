@@ -33,4 +33,11 @@ export default {
 
   jwt_refresh_expires_in:
     process.env.JWT_REFRESH_EXPIRES_IN as StringValue,
+
+  ssl_store_id: process.env.SSL_STORE_ID!,
+  ssl_store_password: process.env.SSL_STORE_PASSWORD!,
+  ssl_is_live: process.env.SSL_IS_LIVE === "true",
+
+  backend_url: process.env.BACKEND_URL!,
+  frontend_url: process.env.FRONTEND_URL!,
 };

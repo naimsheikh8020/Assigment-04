@@ -31,11 +31,22 @@ const createRental = async (customerId: string, payload: TCreateRental) => {
 
   // Fetch all gear items at once
   const gearIds = items.map((item) => item.gearItemId);
+
   const gears = await prisma.gearItem.findMany({
     where: {
       id: { in: gearIds },
     },
   });
+
+  // Check that all gears belong to the same provider
+  const providerIds = new Set(gears.map((gear) => gear.providerId));
+
+  if (providerIds.size > 1) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "A rental order can contain gear from only one provider.",
+    );
+  }
 
   // Create a map for O(1) lookup
   const gearMap = new Map(gears.map((gear) => [gear.id, gear]));
