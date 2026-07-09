@@ -57,9 +57,27 @@ const cancelPayment = catchAsync(async (req: Request, res: Response) => {
    `);
 });
 
+const getPaymentHistory = catchAsync(async (req, res) => {
+  const customerId = req.user.userId;
+
+  const result = await PaymentService.getPaymentHistory(
+    customerId,
+    req.query,
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Payment history retrieved successfully",
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 export const PaymentController = {
   initiatePayment,
   successPayment,
   failPayment,
   cancelPayment,
+  getPaymentHistory
 };

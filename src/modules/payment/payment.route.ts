@@ -18,6 +18,12 @@ router.post(
   PaymentController.initiatePayment
 );
 
+router.get(
+  "/my",
+  auth(UserRole.CUSTOMER),
+  PaymentController.getPaymentHistory,
+);
+
 router.post(
   "/success",
   PaymentController.successPayment

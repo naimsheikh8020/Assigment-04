@@ -14,6 +14,8 @@ import {
 } from "../../../generated/prisma/enums";
 
 import { AppError } from "../../middlewares/AppError";
+import { Prisma } from "../../../generated/prisma/client";
+import { TGetPaymentQuery } from "./payment.interface";
 
 const sslcz = new SSLCommerzPayment(
   config.ssl_store_id,
@@ -230,10 +232,62 @@ const cancelPayment = async (
   return "cancel";
 };
 
+const getPaymentHistory = async (
+  customerId: string,
+  query: TGetPaymentQuery,
+) => {
+  const { page = "1", limit = "10" } = query;
+
+  const currentPage = Math.max(Number(page) || 1, 1);
+  const currentLimit = Math.max(Number(limit) || 10, 1);
+
+  const skip = (currentPage - 1) * currentLimit;
+
+  const where: Prisma.PaymentWhereInput = {
+    rentalOrder: {
+      customerId,
+    },
+  };
+
+  const payments = await prisma.payment.findMany({
+    where,
+    skip,
+    take: currentLimit,
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      rentalOrder: {
+        select: {
+          id: true,
+          startDate: true,
+          endDate: true,
+          totalAmount: true,
+          status: true,
+        },
+      },
+    },
+  });
+
+  const total = await prisma.payment.count({
+    where,
+  });
+
+  return {
+    meta: {
+      page: currentPage,
+      limit: currentLimit,
+      total,
+    },
+    data: payments,
+  };
+};
+
 export const PaymentService = {
   initiatePayment,
   validatePayment,
   successPayment,
   failPayment,
   cancelPayment,
+  getPaymentHistory
 };
