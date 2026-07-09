@@ -9,6 +9,8 @@ import { PaymentRoutes } from "../src/modules/payment/payment.route";
 import { OrderRoutes } from "../src/modules/provider/order/order.route";
 import { ReviewRoutes } from "../src/modules/review/review.route";
 import { ProfileRoutes } from "../src/modules/profile/profile.route";
+import { AdminGearRoutes } from "../src/modules/admin/gear/gear.route";
+import { AdminRentalRoutes } from "../src/modules/admin/rental/rental.route";
 
 const router = Router();
 
@@ -52,6 +54,14 @@ const moduleRoutes = [
   {
     path: "/profile",
     route: ProfileRoutes,
+  },
+  {
+    path: "/admin/gears",
+    route: AdminGearRoutes,
+  },
+  {
+    path: "/admin/rentals",
+    route: AdminRentalRoutes,
   },
 ];
 
