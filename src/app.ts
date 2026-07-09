@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 
-import routes from "../routes";
+import routes from "../routes/index.js";
 import { globalErrorHandler } from "./middlewares/global-error";
 import { notFoundHandler } from "./middlewares/not-found";
 
@@ -16,7 +16,6 @@ app.use(cookieParser());
 
 // API Routes
 app.use("/api/v1", routes);
-
 
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({
