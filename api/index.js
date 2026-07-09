@@ -1,3 +1,2 @@
-import app from "../dist/app.js";
-
-export default app;
+// api/index.js
+export { default } from "../dist/app.js";

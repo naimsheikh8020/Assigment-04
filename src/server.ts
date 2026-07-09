@@ -1,17 +1,13 @@
 import dotenv from "dotenv";
 import config from "./config/index.js";
 import { prisma } from "./config/prisma.js";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
 
 dotenv.config();
 
 import app from "./app.js";
 const PORT = config.port;
 
-const isDirectRun =
-  process.argv[1] !== undefined &&
-  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
 
 const startServer = async () => {
   try {
@@ -27,8 +23,8 @@ const startServer = async () => {
   }
 };
 
-if (isDirectRun) {
+
   startServer();
-}
+
 
 export { startServer };
