@@ -17,13 +17,16 @@ import { AppError } from "../../middlewares/AppError";
 import { Prisma } from "../../../generated/prisma/client";
 import { TGetPaymentQuery } from "./payment.interface";
 
-const initiatePayment = async (customerId: string, rentalOrderId: string) => {
-  const sslcz = new SSLCommerzPayment(
-    config.ssl_store_id,
-    config.ssl_store_password,
-    config.ssl_is_live,
-  );
+const sslcz = new SSLCommerzPayment(
+  config.ssl_store_id,
+  config.ssl_store_password,
+  config.ssl_is_live
+);
 
+const initiatePayment = async (
+  customerId: string,
+  rentalOrderId: string
+) => {
   // Check rental exists
   const rental = await prisma.rentalOrder.findUnique({
     where: {
@@ -35,19 +38,25 @@ const initiatePayment = async (customerId: string, rentalOrderId: string) => {
   });
 
   if (!rental) {
-    throw new AppError(StatusCodes.NOT_FOUND, "Rental order not found");
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      "Rental order not found"
+    );
   }
 
   // Check owner
   if (rental.customerId !== customerId) {
-    throw new AppError(StatusCodes.FORBIDDEN, "Unauthorized access");
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      "Unauthorized access"
+    );
   }
 
   // Rental must be confirmed
   if (rental.status !== RentalStatus.CONFIRMED) {
     throw new AppError(
       StatusCodes.BAD_REQUEST,
-      "Rental must be confirmed before payment",
+      "Rental must be confirmed before payment"
     );
   }
 
@@ -60,7 +69,10 @@ const initiatePayment = async (customerId: string, rentalOrderId: string) => {
   });
 
   if (existingPayment) {
-    throw new AppError(StatusCodes.BAD_REQUEST, "Payment already completed");
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "Payment already completed"
+    );
   }
 
   // Generate Transaction ID
@@ -79,50 +91,53 @@ const initiatePayment = async (customerId: string, rentalOrderId: string) => {
 
   // SSLCommerz Payload
   const paymentData = {
-    total_amount: Number(rental.totalAmount),
-    currency: "BDT",
+  total_amount: Number(rental.totalAmount),
+  currency: "BDT",
 
-    tran_id: transactionId,
+  tran_id: transactionId,
 
-    success_url: `${config.backend_url}/api/v1/payments/success?rentalOrderId=${rental.id}&transactionId=${transactionId}`,
+  success_url: `${config.backend_url}/api/v1/payments/success?rentalOrderId=${rental.id}&transactionId=${transactionId}`,
 
-    fail_url: `${config.backend_url}/api/v1/payments/fail?rentalOrderId=${rental.id}&transactionId=${transactionId}`,
+  fail_url: `${config.backend_url}/api/v1/payments/fail?rentalOrderId=${rental.id}&transactionId=${transactionId}`,
 
-    cancel_url: `${config.backend_url}/api/v1/payments/cancel?rentalOrderId=${rental.id}&transactionId=${transactionId}`,
+  cancel_url: `${config.backend_url}/api/v1/payments/cancel?rentalOrderId=${rental.id}&transactionId=${transactionId}`,
 
-    ipn_url: `${config.backend_url}/api/v1/payments/ipn`,
+  ipn_url: `${config.backend_url}/api/v1/payments/ipn`,
 
-    shipping_method: "NO",
+  shipping_method: "NO",
 
-    product_name: "Sports Gear Rental",
-    product_category: "Rental",
-    product_profile: "general",
+  product_name: "Sports Gear Rental",
+  product_category: "Rental",
+  product_profile: "general",
 
-    cus_name: rental.customer.name,
-    cus_email: rental.customer.email,
-    cus_add1: "Dhaka",
-    cus_add2: "N/A",
-    cus_city: "Dhaka",
-    cus_state: "Dhaka",
-    cus_postcode: "1207",
-    cus_country: "Bangladesh",
-    cus_phone: rental.customer.phone || "01700000000",
-    cus_fax: "N/A",
+  cus_name: rental.customer.name,
+  cus_email: rental.customer.email,
+  cus_add1: "Dhaka",
+  cus_add2: "N/A",
+  cus_city: "Dhaka",
+  cus_state: "Dhaka",
+  cus_postcode: "1207",
+  cus_country: "Bangladesh",
+  cus_phone: rental.customer.phone || "01700000000",
+  cus_fax: "N/A",
 
-    ship_name: rental.customer.name,
-    ship_add1: "Dhaka",
-    ship_add2: "N/A",
-    ship_city: "Dhaka",
-    ship_state: "Dhaka",
-    ship_postcode: "1207",
-    ship_country: "Bangladesh",
-  };
+  ship_name: rental.customer.name,
+  ship_add1: "Dhaka",
+  ship_add2: "N/A",
+  ship_city: "Dhaka",
+  ship_state: "Dhaka",
+  ship_postcode: "1207",
+  ship_country: "Bangladesh",
+};
 
   const response = await sslcz.init(paymentData);
   console.log(response);
 
   if (!response?.GatewayPageURL) {
-    throw new AppError(StatusCodes.BAD_REQUEST, "Failed to initialize payment");
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      "Failed to initialize payment"
+    );
   }
 
   return {
@@ -134,7 +149,7 @@ const validatePayment = async (
   rentalOrderId: string,
   transactionId: string,
   status: string,
-  payload: Record<string, any>,
+  payload: Record<string, any>
 ) => {
   const validationURL = `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${payload.val_id}&store_id=${config.ssl_store_id}&store_passwd=${config.ssl_store_password}&format=json`;
 
@@ -178,17 +193,19 @@ const validatePayment = async (
 const successPayment = async (
   rentalOrderId: string,
   transactionId: string,
-  payload: Record<string, any>,
+  payload: Record<string, any>
 ) => {
   return await validatePayment(
     rentalOrderId,
     transactionId,
     "success",
-    payload,
+    payload
   );
 };
 
-const failPayment = async (transactionId: string) => {
+const failPayment = async (
+  transactionId: string
+) => {
   await prisma.payment.update({
     where: {
       transactionId,
@@ -200,7 +217,9 @@ const failPayment = async (transactionId: string) => {
 
   return "fail";
 };
-const cancelPayment = async (transactionId: string) => {
+const cancelPayment = async (
+  transactionId: string
+) => {
   await prisma.payment.update({
     where: {
       transactionId,
@@ -270,5 +289,5 @@ export const PaymentService = {
   successPayment,
   failPayment,
   cancelPayment,
-  getPaymentHistory,
+  getPaymentHistory
 };
