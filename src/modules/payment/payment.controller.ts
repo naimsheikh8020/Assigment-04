@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { catchAsync } from "../../utils/catchAsync";
-import { sendResponse } from "../../utils/sendResponse";
+import { catchAsync } from "../../utils/catchAsync.js";
+import { sendResponse } from "../../utils/sendResponse.js";
 
-import { PaymentService } from "./payment.service";
+import { PaymentService } from "./payment.service.js";
 
 const initiatePayment = catchAsync(async (req: Request, res: Response) => {
   const result = await PaymentService.initiatePayment(

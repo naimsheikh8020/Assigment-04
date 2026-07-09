@@ -1,11 +1,11 @@
-import { UserStatus } from "../../../generated/prisma/enums";
-import { prisma } from "../../config/prisma";
-import { TLoginUser, TRegisterUser } from "./auth.interface";
-import { comparePassword, hashPassword } from "../../utils/bcrypt";
-import { createToken } from "../../utils/jwt";
-import config from "../../config";
-import { AppError } from "../../middlewares/AppError";
+import { UserStatus } from "../../../generated/prisma/enums.js";
+import { prisma } from "../../config/prisma.js";
+import { TLoginUser, TRegisterUser } from "./auth.interface.js";
+import { comparePassword, hashPassword } from "../../utils/bcrypt.js";
+import { createToken } from "../../utils/jwt.js";
+import { AppError } from "../../middlewares/AppError.js";
 import { StatusCodes } from "http-status-codes";
+import config from "../../config/index.js";
 
 const registerUser = async (payload: TRegisterUser) => {
   // check existing user

@@ -1,7 +1,7 @@
 import {
   UserRole,
   UserStatus,
-} from "../../../../generated/prisma/enums";
+} from "../../../../generated/prisma/enums.js";
 
 export type TGetAllUsersQuery = {
   search?: string;

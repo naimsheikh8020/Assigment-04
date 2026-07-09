@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
-import config from "../config";
+import config from "../config/index.js";
+
 
 export const hashPassword = async (password: string): Promise<string> => {
   return await bcrypt.hash(password, Number(config.bcrypt_salt_rounds));

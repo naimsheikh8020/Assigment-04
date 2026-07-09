@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
 
-import { prisma } from "../../config/prisma";
-import { AppError } from "../../middlewares/AppError";
+import { prisma } from "../../config/prisma.js";
+import { AppError } from "../../middlewares/AppError.js";
 
-import { TUpdateProfile } from "./profile.interface";
+import { TUpdateProfile } from "./profile.interface.js";
 
 const getMyProfile = async (userId: string) => {
   const user = await prisma.user.findUnique({

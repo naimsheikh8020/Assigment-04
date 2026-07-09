@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes";
-import { Prisma, RentalStatus } from "../../../../generated/prisma/client";
+import { Prisma, RentalStatus } from "../../../../generated/prisma/client.js";
 
-import { prisma } from "../../../config/prisma";
-import { AppError } from "../../../middlewares/AppError";
+import { prisma } from "../../../config/prisma.js";
+import { AppError } from "../../../middlewares/AppError.js";
 
-import { TGetOrderQuery, TUpdateOrderStatus } from "./order.interface";
+import { TGetOrderQuery, TUpdateOrderStatus } from "./order.interface.js";
 
 const getProviderOrders = async (
   providerId: string,

@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
 
 
-import { RentalService } from "./rental.service";
-import { catchAsync } from "../../../utils/catchAsync";
-import { sendResponse } from "../../../utils/sendResponse";
+import { RentalService } from "./rental.service.js";
+import { catchAsync } from "../../../utils/catchAsync.js";
+import { sendResponse } from "../../../utils/sendResponse.js";
 
 const getAllRentals = catchAsync(async (req, res) => {
   const result = await RentalService.getAllRentals(req.query);

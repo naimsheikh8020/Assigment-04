@@ -1,36 +1,39 @@
 {
   "compilerOptions": {
-    // "rootDir": "src",
-    "outDir": "dist",
-
-    // Environment setup & latest features
-    "lib": ["ESNext"],
-    "module": "ESNext",
     "target": "ES2023",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
+    "lib": ["ES2023"],
 
-    // Bundler mode
-    "moduleResolution": "bundler",
-    // "allowImportingTsExtensions": true,
-    // "verbatimModuleSyntax": true,
-    "noEmit": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
-    // Best practices
+    "rootDir": ".",
+    "outDir": "./dist",
+
     "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
 
     "esModuleInterop": true,
-    "ignoreDeprecations": "6.0",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
 
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "types": ["node"],
+
+    "noEmit": true
   },
-  "include": ["src", "prisma.config.ts"]
+  "include": [
+    "src",
+    "generated",
+    "prisma.config.ts",
+    "api"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

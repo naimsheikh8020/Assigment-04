@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
-import { ReviewService } from "./review.service";
-import { catchAsync } from "../../utils/catchAsync";
-import { sendResponse } from "../../utils/sendResponse";
+import { ReviewService } from "./review.service.js";
+import { catchAsync } from "../../utils/catchAsync.js";
+import { sendResponse } from "../../utils/sendResponse.js";
 
 const createReview = catchAsync(async (req, res) => {
   const customerId = req.user.userId;

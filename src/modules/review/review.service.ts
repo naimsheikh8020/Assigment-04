@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 
-import { prisma } from "../../config/prisma";
-import { AppError } from "../../middlewares/AppError";
+import { prisma } from "../../config/prisma.js";
+import { AppError } from "../../middlewares/AppError.js";
 
-import { TCreateReview, TUpdateReview } from "./review.interface";
-import { RentalStatus } from "../../../generated/prisma/client";
+import { TCreateReview, TUpdateReview } from "./review.interface.js";
+import { RentalStatus } from "../../../generated/prisma/client.js";
 
 const createReview = async (
   customerId: string,

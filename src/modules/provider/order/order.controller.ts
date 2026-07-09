@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { catchAsync } from "../../../utils/catchAsync";
-import { sendResponse } from "../../../utils/sendResponse";
+import { catchAsync } from "../../../utils/catchAsync.js";
+import { sendResponse } from "../../../utils/sendResponse.js";
 
-import { OrderService } from "./order.service";
+import { OrderService } from "./order.service.js";
 
 const getProviderOrders = catchAsync(
   async (req: Request, res: Response) => {

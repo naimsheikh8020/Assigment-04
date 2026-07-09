@@ -1,4 +1,4 @@
-import { GearCondition } from "../../../../generated/prisma/enums";
+import { GearCondition } from "../../../../generated/prisma/enums.js";
 
 export type TCreateGear = {
   categoryId: string;

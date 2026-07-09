@@ -1,10 +1,10 @@
-import { Prisma } from "../../../generated/prisma/client";
+import { Prisma } from "../../../generated/prisma/client.js";
 import { StatusCodes } from "http-status-codes";
 
-import { prisma } from "../../config/prisma";
-import { AppError } from "../../middlewares/AppError";
+import { prisma } from "../../config/prisma.js";
+import { AppError } from "../../middlewares/AppError.js";
 
-import { TCreateRental, TGetRentalQuery } from "./rental.interface";
+import { TCreateRental, TGetRentalQuery } from "./rental.interface.js";
 
 const createRental = async (customerId: string, payload: TCreateRental) => {
   const { startDate, endDate, items } = payload;

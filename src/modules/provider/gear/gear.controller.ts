@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { catchAsync } from "../../../utils/catchAsync";
-import { sendResponse } from "../../../utils/sendResponse";
+import { catchAsync } from "../../../utils/catchAsync.js";
+import { sendResponse } from "../../../utils/sendResponse.js";
 
-import { GearService } from "./gear.service";
+import { GearService } from "./gear.service.js";
 
 const createGear = catchAsync(async (req: Request, res: Response) => {
   const result = await GearService.createGear(

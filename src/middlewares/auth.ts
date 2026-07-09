@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import config from "../config";
-import { verifyToken } from "../utils/jwt";
-import { UserRole } from "../../generated/prisma/client";
+
+import { verifyToken } from "../utils/jwt.js";
+import { UserRole } from "../../generated/prisma/client.js";
+import config from "../config/index.js";
 
 export const auth =
   (...requiredRoles: UserRole[]) =>

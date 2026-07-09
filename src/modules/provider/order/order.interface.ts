@@ -1,4 +1,4 @@
-import { RentalStatus } from "../../../../generated/prisma/enums";
+import { RentalStatus } from "../../../../generated/prisma/enums.js";
 
 export type TUpdateOrderStatus = {
   status: RentalStatus;

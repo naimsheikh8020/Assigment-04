@@ -1,8 +1,8 @@
-import { Prisma } from "../../../../generated/prisma/client";
+import { Prisma } from "../../../../generated/prisma/client.js";
 
-import { prisma } from "../../../config/prisma";
+import { prisma } from "../../../config/prisma.js";
 
-import { TGetRentalQuery } from "./rental.interface";
+import { TGetRentalQuery } from "./rental.interface.js";
 
 const getAllRentals = async (query: TGetRentalQuery) => {
   const {

@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { Prisma } from "../../generated/prisma/client"; // or "@prisma/client"
+import { Prisma } from "../../generated/prisma/client.js"; // or "@prisma/client"
 import { StatusCodes } from "http-status-codes";
 import { ZodError } from "zod";
 import jwt from "jsonwebtoken";
-import { AppError } from "./AppError";
+import { AppError } from "./AppError.js";
 
 export const globalErrorHandler = (
   err: unknown,

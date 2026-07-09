@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 
-import { ProfileService } from "./profile.service";
-import { catchAsync } from "../../utils/catchAsync";
-import { sendResponse } from "../../utils/sendResponse";
+import { ProfileService } from "./profile.service.js";
+import { catchAsync } from "../../utils/catchAsync.js";
+import { sendResponse } from "../../utils/sendResponse.js";
 
 const getMyProfile = catchAsync(async (req, res) => {
   const userId = req.user.userId;

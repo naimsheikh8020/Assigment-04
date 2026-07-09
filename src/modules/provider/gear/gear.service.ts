@@ -1,13 +1,13 @@
 import slugify from "slugify";
 import { StatusCodes } from "http-status-codes";
 
-import { prisma } from "../../../config/prisma";
-import { AppError } from "../../../middlewares/AppError";
+import { prisma } from "../../../config/prisma.js";
+import { AppError } from "../../../middlewares/AppError.js";
 
 import {
   TCreateGear,
   TUpdateGear,
-} from "./gear.interface";
+} from "./gear.interface.js";
 
 const createGear = async (
   providerId: string,

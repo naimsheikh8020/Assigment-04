@@ -1,8 +1,8 @@
-import { Prisma } from "../../../../generated/prisma/client";
+import { Prisma } from "../../../../generated/prisma/client.js";
 
-import { prisma } from "../../../config/prisma";
+import { prisma } from "../../../config/prisma.js";
 
-import { TGetGearQuery } from "./gear.interface";
+import { TGetGearQuery } from "./gear.interface.js";
 
 const getAllGear = async (query: TGetGearQuery) => {
   const {

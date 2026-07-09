@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 
-import { GearService } from "./gear.service";
-import { catchAsync } from "../../../utils/catchAsync";
-import { sendResponse } from "../../../utils/sendResponse";
+import { GearService } from "./gear.service.js";
+import { catchAsync } from "../../../utils/catchAsync.js";
+import { sendResponse } from "../../../utils/sendResponse.js";
 
 const getAllGear = catchAsync(async (req, res) => {
   const result = await GearService.getAllGear(req.query);

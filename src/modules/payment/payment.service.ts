@@ -3,19 +3,19 @@ import SSLCommerzPayment from "sslcommerz-lts";
 import { v4 as uuidv4 } from "uuid";
 import { StatusCodes } from "http-status-codes";
 
-import { prisma } from "../../config/prisma";
-import config from "../../config";
+import { prisma } from "../../config/prisma.js";
+import config from "../../config/index.js";
 import axios from "axios";
-
 import {
   PaymentProvider,
   PaymentStatus,
   RentalStatus,
-} from "../../../generated/prisma/enums";
+} from "../../../generated/prisma/enums.js";
 
-import { AppError } from "../../middlewares/AppError";
-import { Prisma } from "../../../generated/prisma/client";
-import { TGetPaymentQuery } from "./payment.interface";
+import { AppError } from "../../middlewares/AppError.js";
+import { Prisma } from "../../../generated/prisma/client.js";
+import { TGetPaymentQuery } from "./payment.interface.js";
+
 
 const sslcz = new SSLCommerzPayment(
   config.ssl_store_id,
